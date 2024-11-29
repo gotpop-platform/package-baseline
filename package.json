@@ -1,0 +1,43 @@
+{
+  "name": "@gotpop-platform/package-baseline",
+  "version": "0.0.0001",
+  "description": "A baseline starter kit",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests specified\" && exit 0",
+    "pub": "dotenv npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:gotpop-platform/package-baseline.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "keywords": [
+    "utils",
+    "npm",
+    "package"
+  ],
+  "author": "GotPop",
+  "license": "MIT",
+  "bun": {
+    "version": ">=1.1.36"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false
+  },
+  "peerDependencies": {
+    "@types/bun": "^1.1.11",
+    "@types/node": "^22.7.4",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "@gotpop-platform/package-jsx-factory": "latest",
+    "@gotpop-platform/package-markdown": "latest",
+    "@gotpop-platform/package-utilities": "latest"
+  }
+}
