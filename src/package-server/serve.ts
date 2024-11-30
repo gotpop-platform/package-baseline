@@ -1,7 +1,7 @@
 import { clients, handleWSClose, handleWSMessage, handleWSOpen } from "./websocket"
 
 import type { Server } from "bun"
-import type { ServerConfig } from "types"
+import type { ServerConfig } from "./types"
 import { buildConfig } from "./build"
 import { contentMap } from "../package-markdown"
 import { handleRequests } from "./handleRequests"

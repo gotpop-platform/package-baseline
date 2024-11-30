@@ -1,5 +1,5 @@
 import type { MarkdownFileProps } from "@gotpop-platform/package-markdown"
-import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
+import { jsxFactory } from "../package-jsx-factory"
 
 type ComponentProps = {
   markdownItems: Map<string, MarkdownFileProps> | MarkdownFileProps

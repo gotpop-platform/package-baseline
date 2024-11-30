@@ -4,7 +4,7 @@
 // } from "../package-utilities"
 
 // import type { IconName } from "./Icon.types"
-// import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
+// import { jsxFactory } from "../../package-jsx-factory"
 // import { readFileSync } from "fs"
 
 // type IconProps = {

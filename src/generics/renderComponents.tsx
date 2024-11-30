@@ -1,4 +1,4 @@
-import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
+import { jsxFactory } from "../package-jsx-factory"
 import { type SectionType } from "@gotpop-platform/package-markdown"
 
 type SectionRender = Pick<SectionType, "sectionHtml" | "sectionComponents">

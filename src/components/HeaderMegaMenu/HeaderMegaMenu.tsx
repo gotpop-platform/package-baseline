@@ -3,7 +3,7 @@ import { mkClass, useCSS } from "../../package-utilities"
 import { HeaderSurface } from "./HeaderSurface"
 import { LogoMegaMenu } from "./LogoMegaMenu"
 import { MegaNav } from "./MegaNav"
-import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
+import { jsxFactory } from "../../package-jsx-factory"
 
 type HeaderMegaMenuProps = {
   title?: string

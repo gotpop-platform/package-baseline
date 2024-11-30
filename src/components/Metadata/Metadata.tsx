@@ -4,7 +4,7 @@ import {
   useCSS
 } from "../../package-utilities";
 
-import { jsxFactory } from "@gotpop-platform/package-jsx-factory";
+import { jsxFactory } from "../../package-jsx-factory";
 
 export const Metadata = ({ date, author }: { date: string; author: string }) => {
   const { css } = useCSS({ meta: import.meta })

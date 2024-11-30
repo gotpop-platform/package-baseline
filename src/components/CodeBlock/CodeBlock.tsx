@@ -1,6 +1,6 @@
 import { mkClass, useCSS } from "../../package-utilities"
 
-import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
+import { jsxFactory } from "../../package-jsx-factory"
 
 interface CodeBlockProps {
   language?: string
