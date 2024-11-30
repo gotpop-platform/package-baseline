@@ -1,5 +1,5 @@
 import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
-import { useCSS } from "@gotpop-platform/package-utilities"
+import { useCSS } from "../../package-utilities"
 
 export function MenuSide({ allPageMetadata }: { allPageMetadata: Map<string, any> }): JSX.Element {
   const { css } = useCSS({ meta: import.meta })

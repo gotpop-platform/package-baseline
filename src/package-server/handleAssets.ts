@@ -1,6 +1,6 @@
 import { file } from "bun"
 import { join } from "path"
-import { logger } from "@gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 
 export async function handleStaticAssets({ path, publicDir }: { path: string; publicDir: string }) {
   const fullPath = join(process.cwd(), publicDir, path)

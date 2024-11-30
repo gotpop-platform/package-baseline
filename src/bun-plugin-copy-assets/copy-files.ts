@@ -1,7 +1,7 @@
 import { join, relative } from "path"
 
 import { promises as fs } from "fs"
-import { logger } from "@gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 
 export async function copyFiles({
   source,

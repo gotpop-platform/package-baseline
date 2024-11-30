@@ -2,7 +2,7 @@ import {
   cn,
   mkClass,
   useCSS
-} from "@gotpop-platform/package-utilities"
+} from "../../package-utilities"
 
 import { jsxFactory } from "@gotpop-platform/package-jsx-factory"
 

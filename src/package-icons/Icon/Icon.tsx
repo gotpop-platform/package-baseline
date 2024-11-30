@@ -1,7 +1,7 @@
 // import {
 //   mkClass,
 //   useCSS
-// } from "@gotpop-platform/package-utilities"
+// } from "../package-utilities"
 
 // import type { IconName } from "./Icon.types"
 // import { jsxFactory } from "@gotpop-platform/package-jsx-factory"

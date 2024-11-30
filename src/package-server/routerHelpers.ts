@@ -1,4 +1,4 @@
-import { logger } from "@gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 
 export const NOT_FOUND_RESPONSE = new Response(null, {
   status: 302,
