@@ -1,11 +1,12 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A baseline starter kit",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
     "bump": "bunx bumpp -a patch",
+    "clean": "rm -rf node_modules",
     "test": "echo \"No tests specified\" && exit 0",
     "pub": "dotenv npm publish"
   },
@@ -31,11 +32,17 @@
   "devDependencies": {
     "dotenv": "^16.4.5"
   },
+  "dependencies": {
+    "@gotpop-platform/package-logger": "workspace:*"
+  },
   "bun": {
     "version": ">=1.1.37"
   },
   "prettier": {
     "printWidth": 100,
     "semi": false
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
