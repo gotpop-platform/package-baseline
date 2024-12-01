@@ -1,10 +1,11 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A baseline starter kit",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
+    "bump": "bunx bumpp",
     "test": "echo \"No tests specified\" && exit 0",
     "pub": "dotenv npm publish"
   },
@@ -13,7 +14,7 @@
     "url": "git@github.com:gotpop-platform/package-baseline.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "utils",
