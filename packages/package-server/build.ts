@@ -1,7 +1,7 @@
 import { BuildArtifact, BuildOutput, Loader } from "bun"
 
-import { contentMap } from "../../package-markdown"
-import { createCopyFilesPlugin } from "../../bun-plugin-copy-assets"
+import { contentMap } from "../package-markdown"
+import { createCopyFilesPlugin } from "../bun-plugin-copy-assets"
 import { logger } from "@gotpop-platform/package-logger"
 import store from "./store"
 

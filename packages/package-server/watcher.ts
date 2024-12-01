@@ -1,5 +1,5 @@
 import { ServerWebSocket } from "bun"
-import { contentMap } from "../../package-markdown"
+import { contentMap } from "../package-markdown"
 import { getRelativePaths } from "./build"
 import { logger } from "@gotpop-platform/package-logger"
 import { rebuildFiles } from "./build"

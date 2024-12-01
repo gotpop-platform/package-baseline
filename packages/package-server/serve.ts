@@ -3,7 +3,7 @@ import { clients, handleWSClose, handleWSMessage, handleWSOpen } from "./websock
 import type { Server } from "bun"
 import type { ServerConfig } from "./types"
 import { buildConfig } from "./build"
-import { contentMap } from "../../package-markdown"
+import { contentMap } from "../package-markdown"
 import { handleRequests } from "./handleRequests"
 import { logger } from "@gotpop-platform/package-logger"
 import store from "./store"
