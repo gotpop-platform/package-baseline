@@ -18,7 +18,7 @@ export const Head = ({
 
   const renderScripts = (scripts: Record<string, string>[]) => {
     return scripts.map((script) => {
-      console.log('script :', script);
+      // console.log('script :', script);
       if (!script) {
         return
       }

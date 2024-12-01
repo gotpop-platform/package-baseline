@@ -65,25 +65,15 @@ export const getRelativePaths = (buildOutput: BuildOutput) => {
 }
 
 export async function rebuildFiles() {
+  console.time("rebuildFiles")
   try {
     store.buildResponse = await Bun.build(buildConfig)
     // console.log("store.buildResponse :", store.buildResponse)
-
+    console.timeEnd("rebuildFiles")
     return { success: true, buildResponse: store.buildResponse }
   } catch (error) {
     logger({ msg: `Build failed: ${error}`, styles: ["red"] })
+    console.timeEnd("rebuildFiles")
     return { success: false, error }
-  }
-}
-
-// delete this function
-export const loadContent = async () => {
-  try {
-    store.currentContent = await contentMap()
-
-    return store.currentContent
-  } catch (error) {
-    logger({ msg: `Error loading content: ${error}`, styles: ["red"] })
-    return new Map()
   }
 }

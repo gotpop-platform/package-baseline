@@ -21,6 +21,7 @@ const serverConfig = (): ServerConfig => ({
 })
 
 export async function startServer() {
+  console.time("startServer")
   store.currentContent = await contentMap()
 
   Bun.serve({
@@ -41,4 +42,5 @@ export async function startServer() {
     { msg: "Server running at:", styles: ["green", "bold"] },
     { msg: `http://localhost:${env.npm_package_config_server_port}`, styles: ["dim"] }
   )
+  console.timeEnd("startServer")
 }

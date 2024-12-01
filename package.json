@@ -1,6 +1,6 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A baseline starter kit",
   "main": "src/index.ts",
   "scripts": {
@@ -35,9 +35,6 @@
     "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5",
-    "@gotpop-platform/package-jsx-factory": "latest",
-    "@gotpop-platform/package-markdown": "latest",
-    "@gotpop-platform/package-utilities": "latest"
+    "dotenv": "^16.4.5"
   }
 }
