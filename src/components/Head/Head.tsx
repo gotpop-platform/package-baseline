@@ -18,16 +18,16 @@ export const Head = ({
 
   const renderScripts = (scripts: Record<string, string>[]) => {
     return scripts.map((script) => {
-      // console.log('script :', script);
+      console.log('script/// :', script);
       if (!script) {
         return
       }
       if (script.type === "worklet") {
         return <script>{`CSS.paintWorklet.addModule('${script.hashedPath}');`}</script>
       }
-      if (script.type === "worklet") {
-        return <script>{`CSS.paintWorklet.addModule('${script.hashedPath}');`}</script>
-      }
+      // if (script.type === "worklet") {
+      //   return <script>{`CSS.paintWorklet.addModule('${script.hashedPath}');`}</script>
+      // }
 
       if (script.type === "css") {
         return <link rel="stylesheet" href={script.hashedPath} />
