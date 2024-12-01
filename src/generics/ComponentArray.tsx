@@ -1,4 +1,4 @@
-import type { MarkdownFileProps } from "@gotpop-platform/package-markdown"
+import type { MarkdownFileProps } from "../package-markdown"
 import { jsxFactory } from "../package-jsx-factory"
 
 type ComponentProps = {
