@@ -1,9 +1,5 @@
+import { ContentMap } from "./types"
 import { getRelativePaths } from "./build"
-
-// store.ts
-export interface ContentMap {
-  // Define the structure of ContentMap here
-}
 
 class Store {
   private _currentContent: ContentMap | null = null

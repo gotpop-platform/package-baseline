@@ -1,43 +1,17 @@
+import * as path from "path"
+
 import { BuildArtifact, BuildOutput, Loader } from "bun"
 
-import { contentMap } from "../package-markdown"
-import { createCopyFilesPlugin } from "../bun-plugin-copy-assets"
 import { logger } from "@gotpop-platform/package-logger"
-import store from "./store"
 
 type ExtendedLoader = Loader | "css"
 type BuildArtifactType = Omit<BuildArtifact, "loader"> & { loader: ExtendedLoader }
 
-export const buildConfig = {
-  entrypoints: [
-    "src/assets/js/script.ts",
-    "src/assets/js/worklets/worklet.grid.ts",
-    "src/assets/js/worklets/worklet.hero.ts",
-    // "src/assets/styles/index.css", // CSS parsing is still patchy
-  ],
-  outdir: "dist",
-  root: "./src",
-  naming: "[dir]/[name]-[hash].[ext]",
-  experimentalCss: true,
-  plugins: [
-    createCopyFilesPlugin({
-      inputDir: "src/assets",
-      outputDir: "dist/assets",
-      directories: ["fonts", "styles", "img"],
-      preserveStructure: true,
-      verbose: false,
-      silent: false,
-      onFile: async (src, dest) => {
-        console.log(`Processing: ${src}`)
-      },
-    }),
-  ],
-}
+const { env, cwd } = process
+const baseDir = path.join(cwd(), env.npm_package_config_dir_public || "dist")
 
-export const getRelativePaths = (buildOutput: BuildOutput) => {
-  const baseDir = process.cwd() + "/dist"
-
-  return buildOutput.outputs
+export const getRelativePaths = ({ outputs }: BuildOutput) =>
+  outputs
     .filter((output: BuildArtifactType) => !output.path.includes(".woff2"))
     .map((output: BuildArtifactType) => {
       const rootPath = output.path.replace(baseDir, "/").replace(/^\//, "")
@@ -62,15 +36,3 @@ export const getRelativePaths = (buildOutput: BuildOutput) => {
         type,
       }
     })
-}
-
-export async function rebuildFiles() {
-  try {
-    store.buildResponse = await Bun.build(buildConfig)
-
-    return { success: true, buildResponse: store.buildResponse }
-  } catch (error) {
-    logger({ msg: `Build failed: ${error}`, styles: ["red"] })
-    return { success: false, error }
-  }
-}

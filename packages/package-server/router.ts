@@ -14,12 +14,11 @@ interface ModuleType {
   default: (props: PageProps & { query: Record<string, string> }) => Promise<string>
 }
 
-const { env } = process
-const isDevelopment = env.NODE_ENV === "development"
+const { env, cwd } = process
 
 const router = new Bun.FileSystemRouter({
-  style: "nextjs",
-  dir: join(process.cwd(), env.npm_package_config_dir_pages || "./src/pages"),
+  style: (env.npm_package_config_server_router_style || "nextjs") as "nextjs",
+  dir: join(cwd(), env.npm_package_config_dir_pages || "./src/pages"),
 })
 
 export const handleGetPages = async (data: PageProps): Promise<Response> => {
@@ -44,7 +43,7 @@ export const handleGetPages = async (data: PageProps): Promise<Response> => {
       return INTERNAL_SERVER_ERROR_RESPONSE
     }
 
-    const response = await timeFunction("module.default", () =>
+    const response = await timeFunction("Default page load time in ms", () =>
       module.default({
         ...data,
         query: route.params,

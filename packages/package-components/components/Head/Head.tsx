@@ -21,12 +21,10 @@ export const Head = ({
       if (!script) {
         return
       }
+
       if (script.type === "worklet") {
         return <script>{`CSS.paintWorklet.addModule('${script.hashedPath}');`}</script>
       }
-      // if (script.type === "worklet") {
-      //   return <script>{`CSS.paintWorklet.addModule('${script.hashedPath}');`}</script>
-      // }
 
       if (script.type === "css") {
         return <link rel="stylesheet" href={script.hashedPath} />

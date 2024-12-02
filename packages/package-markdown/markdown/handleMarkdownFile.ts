@@ -1,5 +1,5 @@
-import { readFileSync } from "fs"
 import { join } from "path"
+import { readFileSync } from "fs"
 
 export const constructFilePath = (directoryPath: string, fileName: string): string =>
   join(directoryPath, `${fileName}.md`)
