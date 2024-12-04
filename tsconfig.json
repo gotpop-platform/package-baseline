@@ -25,7 +25,7 @@
     /* Paths */
     "baseUrl": ".", // This must be specified if "paths" is specified
     "paths": {
-      "@gotpop-platform/*": ["packages/*/"],
+      "@/gotpop-platform/*": ["packages/*/"],
       "components": ["src/components"],
       "layouts": ["src/components/layouts"],
       "variables": ["src/variables"],
