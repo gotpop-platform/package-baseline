@@ -2,7 +2,7 @@ import { BuildConfig } from "bun"
 import { WatcherProps } from "./types"
 import { contentMap } from "../package-markdown"
 import { getRelativePaths } from "./build"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 import store from "./store"
 import { watch } from "fs/promises"
 

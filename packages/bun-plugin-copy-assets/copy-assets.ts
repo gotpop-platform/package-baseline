@@ -1,6 +1,6 @@
 import { join } from "path"
 import { type BunPlugin } from "bun"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 
 import type { CopyFilesPluginOptions } from "./types"
 import { copyFiles } from "./copy-files"
