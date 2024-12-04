@@ -4,7 +4,7 @@ import { clients, handleWSClose, handleWSMessage, handleWSOpen } from "./websock
 import type { ServerConfig } from "./types"
 import { contentMap } from "../package-markdown"
 import { handleRequests } from "./handleRequests"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 import store from "./store"
 import { watcher } from "./watcher"
 
