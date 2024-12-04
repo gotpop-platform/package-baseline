@@ -5,7 +5,6 @@ import type { ServerConfig } from "./types"
 import { contentMap } from "../package-markdown"
 import { handleRequests } from "./handleRequests"
 import { logger } from "@gotpop-platform/package-logger"
-import { openBrowser } from "./openBrowser"
 import store from "./store"
 import { watcher } from "./watcher"
 
@@ -34,7 +33,6 @@ export async function startServer({ buildConfig }: { buildConfig: BuildConfig })
   })
 
   watcher({ buildConfig, clients, scriptPaths: store.scriptPaths })
-  await openBrowser("http://localhost:2000", { newWindow: false })
 
   logger(
     { msg: "Server running at:", styles: ["green", "bold"] },
