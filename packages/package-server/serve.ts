@@ -32,7 +32,8 @@ export async function startServer({ buildConfig }: { buildConfig: BuildConfig })
     },
   })
 
-  watcher({ buildConfig, clients, scriptPaths: store.scriptPaths })
+  console.log("store.scriptPaths :", store.scriptPaths)
+  await watcher({ buildConfig, clients, scriptPaths: store.scriptPaths })
 
   logger(
     { msg: "Server running at:", styles: ["green", "bold"] },

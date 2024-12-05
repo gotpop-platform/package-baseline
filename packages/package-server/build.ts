@@ -29,6 +29,7 @@ export const getRelativePaths = ({ outputs }: BuildOutput) =>
 
       logger({ msg: "Build complete", styles: ["green", "bold"] })
       logger({ msg: "Output:", styles: ["dim"] }, { msg: rootPath, styles: ["blue"] })
+      console.log("rootPath :", rootPath)
 
       return {
         entryPoint,
