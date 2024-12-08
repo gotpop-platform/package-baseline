@@ -1,2 +1,2 @@
 export * from "./logging"
-export * from "./logging.style"
+export * from "./logging-style"
