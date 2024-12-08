@@ -1,5 +1,5 @@
 import { ServerWebSocket } from "bun"
-import { WSMessage } from "./types"
+import { WSMessage } from "."
 import { logger } from "@/gotpop-platform/package-logger"
 
 export const handleWSOpen = (ws: ServerWebSocket<unknown>): void => {
