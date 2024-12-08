@@ -1,7 +1,10 @@
 import { join, relative } from "path"
 
+// import { env } from "bun"
 import { promises as fs } from "fs"
 import { logger } from "../package-logger"
+
+const { env } = process
 
 export async function copyFiles({
   source,
@@ -14,7 +17,7 @@ export async function copyFiles({
 }) {
   try {
     // Normalize paths
-    const relativePath = relative(process.cwd(), source)
+    const destinationShortened = destination.replace(env.PROJECT_ROOT || "", "")
 
     // Check if source exists
     try {
@@ -73,9 +76,9 @@ export async function copyFiles({
     if (!silent) {
       logger(
         { msg: "Completed copying from", styles: ["italic"] },
-        { msg: relativePath, styles: ["bold", "red"] },
+        { msg: source.replace(env.PROJECT_ROOT || "", ""), styles: ["bold", "red"] },
         { msg: "to", styles: ["dim"] },
-        { msg: destination, styles: ["bold", "green"] }
+        { msg: destinationShortened, styles: ["bold", "green"] }
       )
     }
   } catch (error) {

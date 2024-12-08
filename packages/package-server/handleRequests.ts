@@ -1,4 +1,6 @@
-import type { Server } from "bun"
+import type { BuildConfig, Server } from "bun"
+
+import { ServerConfig } from "./types"
 import { env } from "process"
 import { existsSync } from "fs"
 import { handleGetPages } from "./router"
@@ -7,11 +9,19 @@ import { join } from "path"
 import { logger } from "../package-logger"
 import { store } from "./store"
 
-export async function handleRequests({ request, server }: { request: Request; server: Server }) {
-  const url = new URL(request.url)
-  console.log("url :", url.pathname)
+const ALLOWED_EXTENSIONS = [".js", ".css", ".woff2", ".png", ".jpg", ".svg", ".ico"]
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
-  console.log("process.cwd() :", process.cwd())
+export async function handleRequests({
+  request,
+  server,
+  serverConfig,
+}: {
+  request: Request
+  server: Server
+  serverConfig: ServerConfig
+}) {
+  const url = new URL(request.url)
 
   if (request.headers.get("upgrade") === "websocket") {
     try {
@@ -35,21 +45,17 @@ export async function handleRequests({ request, server }: { request: Request; se
     }
   }
 
-  const ALLOWED_EXTENSIONS = [".js", ".css", ".woff2", ".png", ".jpg", ".svg", ".ico"]
-  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-
   if (ALLOWED_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
     try {
       const publicDir = join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "dist")
-
-      console.log("publicDir :", publicDir)
       const fullPath = join(publicDir, url.pathname)
 
-      // Debug log
-      logger({
-        msg: `Attempting to serve: ${fullPath}`,
-        styles: ["blue"],
-      })
+      if (!serverConfig.silent) {
+        logger({
+          msg: `Attempting to serve: ${fullPath}`,
+          styles: ["blue"],
+        })
+      }
 
       // Check if file exists
       if (!existsSync(fullPath)) {
@@ -63,6 +69,19 @@ export async function handleRequests({ request, server }: { request: Request; se
         })
       }
 
+      // Check file size
+      const fileStats = Bun.file(fullPath).size
+      if (fileStats > MAX_FILE_SIZE) {
+        logger({
+          msg: `File too large: ${fullPath} (${fileStats} bytes)`,
+          styles: ["red"],
+        })
+        return new Response("File too large", {
+          status: 413,
+          statusText: "Payload Too Large",
+        })
+      }
+
       const assetResponse = await handleStaticAssets({
         path: url.pathname,
         publicDir,
@@ -73,14 +92,15 @@ export async function handleRequests({ request, server }: { request: Request; se
           msg: `Failed to handle asset: ${fullPath}`,
           styles: ["red"],
         })
+
         return new Response("Asset not found", {
           status: 404,
           statusText: "Not Found",
         })
       }
 
-      // Add caching headers
       const headers = new Headers(assetResponse.headers)
+
       headers.set("Cache-Control", "public, max-age=31536000")
       headers.set("X-Content-Type-Options", "nosniff")
 
@@ -93,6 +113,7 @@ export async function handleRequests({ request, server }: { request: Request; se
         msg: `[Static Assets] Error: ${error}`,
         styles: ["red"],
       })
+
       const errorMessage = error instanceof Error ? error.message : "Unknown error"
       return new Response(`Error serving static asset: ${errorMessage}`, {
         status: 500,

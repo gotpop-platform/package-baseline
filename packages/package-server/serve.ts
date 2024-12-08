@@ -10,25 +10,19 @@ import { watcher } from "./watcher"
 
 const { env } = process
 
-const serverConfig: ServerConfig = {
-  hostname: "::",
-  development: env.NODE_ENV === "development",
-  port: Number(env.npm_package_config_server_port),
-}
-
 type StartServerOptions = {
   buildConfig: BuildConfig
-  watchPaths: string[]
+  serverConfig: ServerConfig
 }
 
-export async function startServer({ buildConfig, watchPaths }: StartServerOptions) {
+export async function startServer({ buildConfig, serverConfig }: StartServerOptions) {
   store.buildResponse = await Bun.build(buildConfig)
   store.currentContent = await contentMap()
 
   const server = Bun.serve({
     ...serverConfig,
     async fetch(request: Request, server: Server) {
-      return handleRequests({ request, server })
+      return handleRequests({ request, server, serverConfig })
     },
     websocket: {
       open: handleWSOpen,
@@ -41,7 +35,7 @@ export async function startServer({ buildConfig, watchPaths }: StartServerOption
     buildConfig,
     clients,
     scriptPaths: store.scriptPaths,
-    watchPaths,
+    watchPaths: serverConfig.watchPaths,
   })
 
   logger(
