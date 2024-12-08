@@ -25,7 +25,7 @@ export const createCopyFilesPlugin = (options: CopyFilesPluginOptions): BunPlugi
     if (!silent) logger({ msg: "Copying assets...", styles: ["bold", "bgYellowBright"] })
 
     let fileCheck
-    console.log("directories :", directories)
+    // console.log("directories :", directories)
 
     try {
       for (const directory of directories) {

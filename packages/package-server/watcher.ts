@@ -1,7 +1,7 @@
+import { BuildConfig, BuildOutput } from "bun"
 import { cwd, env } from "process"
 import { join, resolve } from "path"
 
-import { BuildConfig } from "bun"
 import { WatcherProps } from "./types"
 import { contentMap } from "../package-markdown"
 import { getRelativePaths } from "./build"
@@ -9,58 +9,74 @@ import { logger } from "../package-logger"
 import store from "./store"
 import { watch } from "fs/promises"
 
-async function rebuildFiles({ buildConfig }: { buildConfig: BuildConfig }) {
-  try {
-    store.buildResponse = await Bun.build(buildConfig)
+interface BuildResult {
+  success: boolean
+  buildResponse?: BuildOutput
+  error?: unknown
+}
 
-    return { success: true, buildResponse: store.buildResponse }
+async function rebuildFiles({ buildConfig }: { buildConfig: BuildConfig }): Promise<BuildResult> {
+  try {
+    const buildResponse = await Bun.build(buildConfig)
+    store.buildResponse = buildResponse
+
+    if (!buildResponse.success) {
+      throw new Error("Build completed but with errors")
+    }
+
+    return { success: true, buildResponse }
   } catch (error) {
-    logger({ msg: `Build failed: ${error}`, styles: ["red"] })
+    logger({
+      msg: `Build failed: ${error instanceof Error ? error.message : String(error)}`,
+      styles: ["red"],
+    })
     return { success: false, error }
   }
 }
 
 export async function watcher({ buildConfig, clients, scriptPaths }: WatcherProps) {
-  const root = env.PROJECT_ROOT
+  const watchPath = join(env.PROJECT_ROOT || "", "packages/client/src/assets")
 
-  if (!root) {
+  if (!watchPath) {
     throw new Error("PROJECT_ROOT is not defined")
   }
 
-  const watcher = watch(join(root, "packages/client/src"), { recursive: true })
+  try {
+    const watcher = watch(watchPath, { recursive: true })
 
-  const location = cwd()
+    for await (const { eventType, filename } of watcher) {
+      if (!filename) continue
 
-  for await (const { filename } of watcher) {
-    // console.log("filename :", filename)
-    if (filename?.includes("src")) {
-      logger({ msg: `Content changed: ${filename}`, styles: ["yellow"] })
+      if (filename.match(/\.(css|js|ts|jsx|tsx|html)$/)) {
+        logger({ msg: `Content changed: ${filename}`, styles: ["yellow"] })
 
-      if (filename.match(/\.(css|js|ts)$/)) {
-        const { success, buildResponse } = await rebuildFiles({ buildConfig })
-        console.log("buildResponse :", buildResponse)
+        const { success, buildResponse, error } = await rebuildFiles({ buildConfig })
 
-        if (success) {
+        if (success && buildResponse) {
           logger({ msg: "Build successful", styles: ["green"] })
           scriptPaths.length = 0
+          scriptPaths.push(...getRelativePaths(buildResponse))
 
-          if (buildResponse) {
-            console.log("...getRelativePaths(buildResponse :", ...getRelativePaths(buildResponse))
-            scriptPaths.push(...getRelativePaths(buildResponse))
-            console.log("scriptPaths :", scriptPaths)
-          }
+          store.currentContent = await contentMap()
+          clients.forEach((client) => client.send("reload"))
         } else {
-          buildResponse.logs.forEach((log: any) => {
-            logger({ msg: log, styles: ["red"] })
-          })
-        }
-
-        store.currentContent = await contentMap()
-
-        for (const client of clients) {
-          client.send("reload")
+          // Handle build errors
+          if (buildResponse?.logs) {
+            buildResponse.logs.forEach((log) => {
+              logger({ msg: String(log), styles: ["red"] })
+            })
+          }
+          clients.forEach((client) => client.send("buildError"))
         }
       }
     }
+  } catch (watchError) {
+    logger({
+      msg: `File watcher error: ${
+        watchError instanceof Error ? watchError.message : String(watchError)
+      }`,
+      styles: ["red"],
+    })
+    throw watchError
   }
 }
