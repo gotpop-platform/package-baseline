@@ -8,26 +8,73 @@ import store from "./store"
 export async function handleRequests({ request, server }: { request: Request; server: Server }) {
   const url = new URL(request.url)
 
-  // Websocket upgrade
   if (request.headers.get("upgrade") === "websocket") {
-    const success = server.upgrade(request)
-
-    if (!success) {
-      return new Response("Websocket upgrade failed", { status: 400 })
+    try {
+      const success = await server.upgrade(request)
+      if (!success) {
+        console.error("[WebSocket] Upgrade failed")
+        return new Response("WebSocket upgrade failed: Connection could not be established", {
+          status: 426,
+          statusText: "Upgrade Required",
+        })
+      }
+      return undefined
+    } catch (error) {
+      console.error("[WebSocket] Error during upgrade:", error)
+      return new Response("WebSocket upgrade failed: Internal server error", {
+        status: 500,
+      })
     }
-    return undefined
   }
 
-  // Static assets
-  if (url.pathname.startsWith("/assets/")) {
-    // console.log("pathname :", url.pathname)
-    const assetResponse = await handleStaticAssets({
-      path: url.pathname,
-      publicDir: env.npm_package_config_dir_public || "./public",
-    })
+  const ALLOWED_EXTENSIONS = [".js", ".css", ".woff2", ".png", ".jpg", ".svg", ".ico"]
+  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
-    if (assetResponse) {
-      return assetResponse
+  if (ALLOWED_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
+    try {
+      // Sanitize and validate path
+      const cleanPath = url.pathname.replace(/\.\./g, "")
+      if (!cleanPath.match(/^[/\w.-]+$/)) {
+        return new Response("Invalid asset path", {
+          status: 400,
+          statusText: "Bad Request",
+        })
+      }
+
+      const publicDir = env.npm_package_config_dir_public || "./public"
+      if (!publicDir) {
+        throw new Error("Public directory not configured")
+      }
+
+      const assetResponse = await handleStaticAssets({
+        path: cleanPath,
+        publicDir,
+        maxSize: MAX_FILE_SIZE,
+      })
+
+      if (!assetResponse) {
+        return new Response("Asset not found", {
+          status: 404,
+          statusText: "Not Found",
+        })
+      }
+
+      // Add caching headers
+      const headers = new Headers(assetResponse.headers)
+      headers.set("Cache-Control", "public, max-age=31536000")
+      headers.set("X-Content-Type-Options", "nosniff")
+
+      return new Response(assetResponse.body, {
+        status: 200,
+        headers,
+      })
+    } catch (error) {
+      console.error("[Static Assets] Error:", error)
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      return new Response(`Error serving static asset: ${errorMessage}`, {
+        status: 500,
+        statusText: "Internal Server Error",
+      })
     }
   }
 

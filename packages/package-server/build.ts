@@ -11,27 +11,25 @@ const { env, cwd } = process
 const baseDir = path.join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "")
 
 export const getRelativePaths = ({ outputs }: BuildOutput) =>
-  outputs
-    // .filter((output: BuildArtifactType) => !output.path.includes(".woff2"))
-    .map((output: BuildArtifactType) => {
-      const rootPath = output.path.replace(baseDir, "/").replace(/^\//, "")
-      const entryPoint =
-        output.path
-          .split("/")
-          .pop()
-          ?.replace(/-[a-z0-9]+\.js$/, ".ts") || ""
+  outputs.map((output: BuildArtifactType) => {
+    const rootPath = output.path.replace(baseDir, "/").replace(/^\//, "")
+    const entryPoint =
+      output.path
+        .split("/")
+        .pop()
+        ?.replace(/-[a-z0-9]+\.js$/, ".ts") || ""
 
-      const type = output.path.includes("worklet.")
-        ? "worklet"
-        : output.loader === "css"
-        ? "css"
-        : "script"
+    const type = output.path.includes("worklet.")
+      ? "worklet"
+      : output.loader === "css"
+      ? "css"
+      : "script"
 
-      logger({ msg: "Build Output:", styles: ["dim"] }, { msg: rootPath, styles: ["blue"] })
+    logger({ msg: "Build Output:", styles: ["dim"] }, { msg: rootPath, styles: ["blue"] })
 
-      return {
-        entryPoint,
-        hashedPath: rootPath,
-        type,
-      }
-    })
+    return {
+      entryPoint,
+      hashedPath: rootPath,
+      type,
+    }
+  })
