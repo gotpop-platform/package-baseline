@@ -17,3 +17,8 @@ export interface WatcherProps {
   buildConfig: BuildConfig
   watchPaths?: string[]
 }
+
+export type StartServerOptions = {
+  buildConfig: BuildConfig
+  serverConfig: ServerConfig
+}

@@ -60,7 +60,9 @@ async function createWatcher(watchPath: string, handleChange: (filename: string)
         continue
       }
 
-      if (event.filename.match(/\.(css|js|md|ts|jsx|tsx|html)$/)) {
+      const VALID_FILE_PATTERN = /\.(css|js|md|ts|jsx|tsx|html)$/
+
+      if (event.filename.match(VALID_FILE_PATTERN)) {
         logger({ msg: `Content changed: ${event.filename}`, styles: ["yellow"] })
         try {
           await handleChange(event.filename)

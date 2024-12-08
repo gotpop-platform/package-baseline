@@ -1,19 +1,17 @@
-import { type BuildConfig, type Server } from "bun"
-import { clients, handleWSClose, handleWSMessage, handleWSOpen } from "./websocket"
+import {
+  StartServerOptions,
+  clients,
+  handleWSClose,
+  handleWSMessage,
+  handleWSOpen,
+  store,
+  watcher,
+} from "."
 
-import type { ServerConfig } from "./types"
+import type { Server } from "bun"
 import { contentMap } from "../package-markdown"
 import { handleRequests } from "./handleRequests"
 import { logger } from "../package-logger"
-import { store } from "./store"
-import { watcher } from "./watcher"
-
-const { env } = process
-
-type StartServerOptions = {
-  buildConfig: BuildConfig
-  serverConfig: ServerConfig
-}
 
 export async function startServer({ buildConfig, serverConfig }: StartServerOptions) {
   store.buildResponse = await Bun.build(buildConfig)
