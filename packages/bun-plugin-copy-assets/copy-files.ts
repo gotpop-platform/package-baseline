@@ -1,8 +1,7 @@
 import { join, relative } from "path"
 
-// import { env } from "bun"
 import { promises as fs } from "fs"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 
 const { env } = process
 

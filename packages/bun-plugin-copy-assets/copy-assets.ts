@@ -1,9 +1,8 @@
 import { join } from "path"
 import { type BunPlugin } from "bun"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 
-import type { CopyFilesPluginOptions } from "./types"
-import { copyFiles } from "./copy-files"
+import { type CopyFilesPluginOptions, copyFiles } from "."
 
 export const createCopyFilesPlugin = (options: CopyFilesPluginOptions): BunPlugin => ({
   name: "copy-assets",

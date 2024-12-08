@@ -11,7 +11,7 @@ import {
 
 import type { Server } from "bun"
 import { contentMap } from "../package-markdown"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 
 export async function startServer({ buildConfig, serverConfig }: StartServerOptions) {
   store.buildResponse = await Bun.build(buildConfig)

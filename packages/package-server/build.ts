@@ -1,7 +1,7 @@
 import { BuildArtifact, BuildOutput, Loader } from "bun"
 
 import { join } from "path"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 
 type ExtendedLoader = Loader | "css"
 type BuildArtifactType = Omit<BuildArtifact, "loader"> & { loader: ExtendedLoader }

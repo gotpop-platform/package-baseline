@@ -5,7 +5,7 @@ import { WatcherProps } from "./types"
 import { contentMap } from "../package-markdown"
 import { env } from "process"
 import { getRelativePaths } from "./build"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 import { store } from "./store"
 import { watch } from "fs/promises"
 

@@ -6,7 +6,7 @@ import { existsSync } from "fs"
 import { handleGetPages } from "./router"
 import { handleStaticAssets } from "./handleAssets"
 import { join } from "path"
-import { logger } from "../package-logger"
+import { logger } from "@/gotpop-platform/package-logger"
 import { store } from "./store"
 
 const ALLOWED_EXTENSIONS = [".js", ".css", ".woff2", ".png", ".jpg", ".svg", ".ico"]
