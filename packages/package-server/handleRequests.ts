@@ -42,6 +42,7 @@ export async function handleRequests({ request, server }: { request: Request; se
       }
 
       const publicDir = env.npm_package_config_dir_public || "./public"
+
       if (!publicDir) {
         throw new Error("Public directory not configured")
       }
@@ -69,7 +70,10 @@ export async function handleRequests({ request, server }: { request: Request; se
         headers,
       })
     } catch (error) {
-      console.error("[Static Assets] Error:", error)
+      logger({
+        msg: `[Static Assets] Error: ${error}`,
+        styles: ["red"],
+      })
       const errorMessage = error instanceof Error ? error.message : "Unknown error"
       return new Response(`Error serving static asset: ${errorMessage}`, {
         status: 500,
