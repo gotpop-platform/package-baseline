@@ -1,4 +1,4 @@
-import { INTERNAL_SERVER_ERROR_RESPONSE, NOT_FOUND_RESPONSE, importModule } from "./routerHelpers"
+import { INTERNAL_SERVER_ERROR_RESPONSE, NOT_FOUND_RESPONSE, importModule } from "."
 
 import { join } from "path"
 import { logger } from "../package-logger"

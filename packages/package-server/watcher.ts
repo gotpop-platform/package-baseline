@@ -1,9 +1,9 @@
 import { BuildConfig, BuildOutput } from "bun"
-import { cwd, env } from "process"
-import { dirname, join, resolve } from "path"
+import { dirname, join } from "path"
 
 import { WatcherProps } from "./types"
 import { contentMap } from "../package-markdown"
+import { env } from "process"
 import { getRelativePaths } from "./build"
 import { logger } from "../package-logger"
 import { store } from "./store"
@@ -98,11 +98,13 @@ export async function watcher({
   }
 
   const upTwoLevels = join(dirname(process.cwd()), "..", "..")
+
   const ROOT = env.PROJECT_ROOT || upTwoLevels
   const resolvedPaths = watchPaths.map((path) => join(ROOT, path))
 
   if (resolvedPaths.length === 0) {
     logger({ msg: "No paths to watch", styles: ["yellow"] })
+
     return
   }
 

@@ -1,14 +1,14 @@
-import * as path from "path"
-
 import { BuildArtifact, BuildOutput, Loader } from "bun"
 
+import { join } from "path"
 import { logger } from "../package-logger"
 
 type ExtendedLoader = Loader | "css"
 type BuildArtifactType = Omit<BuildArtifact, "loader"> & { loader: ExtendedLoader }
 
 const { env } = process
-const baseDir = path.join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "")
+const ROOT = env.PROJECT_ROOT || ""
+const baseDir = join(ROOT, env.npm_package_config_dir_public || "")
 
 export const getRelativePaths = ({ outputs }: BuildOutput) => {
   if (!outputs || !Array.isArray(outputs)) {

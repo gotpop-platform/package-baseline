@@ -57,7 +57,6 @@ export async function handleRequests({
         })
       }
 
-      // Check if file exists
       if (!existsSync(fullPath)) {
         logger({
           msg: `File not found: ${fullPath}`,
@@ -69,8 +68,8 @@ export async function handleRequests({
         })
       }
 
-      // Check file size
       const fileStats = Bun.file(fullPath).size
+
       if (fileStats > MAX_FILE_SIZE) {
         logger({
           msg: `File too large: ${fullPath} (${fileStats} bytes)`,
@@ -115,6 +114,7 @@ export async function handleRequests({
       })
 
       const errorMessage = error instanceof Error ? error.message : "Unknown error"
+
       return new Response(`Error serving static asset: ${errorMessage}`, {
         status: 500,
         statusText: "Internal Server Error",
@@ -122,7 +122,6 @@ export async function handleRequests({
     }
   }
 
-  // Page handling
   try {
     const response = await handleGetPages({
       request,

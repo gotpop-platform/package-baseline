@@ -23,25 +23,30 @@ interface AssetOptions {
   maxSize?: number
 }
 
+const checkFileSize = (fileSize: number, maxSize: number) => {
+  if (maxSize && fileSize > maxSize) {
+    logger({
+      msg: `File size ${fileSize} exceeds limit of ${maxSize} bytes`,
+      styles: ["red"],
+    })
+    return new Response("File too large", {
+      status: 413,
+      statusText: "Payload Too Large",
+    })
+  }
+  return null
+}
+
 export async function handleStaticAssets({ path, publicDir, maxSize = 5_242_880 }: AssetOptions) {
   try {
     const filePath = join(publicDir, path)
     const f = file(filePath)
-
-    // Get file size
     const size = f.size
 
-    // Check file size
-    if (maxSize && size > maxSize) {
-      logger({
-        msg: `File size ${size} exceeds limit of ${maxSize} bytes`,
-        styles: ["red"],
-      })
+    const sizeCheckResult = checkFileSize(size, maxSize)
 
-      return new Response("File too large", {
-        status: 413,
-        statusText: "Payload Too Large",
-      })
+    if (sizeCheckResult instanceof Error) {
+      return sizeCheckResult
     }
 
     const ext = path.substring(path.lastIndexOf("."))
