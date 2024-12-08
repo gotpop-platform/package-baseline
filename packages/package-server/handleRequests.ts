@@ -3,7 +3,7 @@ import { env } from "process"
 import { handleGetPages } from "./router"
 import { handleStaticAssets } from "./handleAssets"
 import { logger } from "../package-logger"
-import store from "./store"
+import { store } from "."
 
 export async function handleRequests({ request, server }: { request: Request; server: Server }) {
   const url = new URL(request.url)

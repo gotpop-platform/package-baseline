@@ -18,7 +18,7 @@ const { env } = process
 
 const router = new Bun.FileSystemRouter({
   style: (env.npm_package_config_server_router_style || "nextjs") as "nextjs",
-  dir: join(env.PROJECT_ROOT, env.npm_package_config_dir_pages),
+  dir: join(env.PROJECT_ROOT || "", env.npm_package_config_dir_pages || "pages"),
 })
 
 export const handleGetPages = async (data: PageProps): Promise<Response> => {
