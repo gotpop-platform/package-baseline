@@ -1,18 +1,25 @@
 import type { Server } from "bun"
 import { env } from "process"
+import { existsSync } from "fs"
 import { handleGetPages } from "./router"
 import { handleStaticAssets } from "./handleAssets"
+import { join } from "path"
 import { logger } from "../package-logger"
-import { store } from "."
+import { store } from "./store"
 
 export async function handleRequests({ request, server }: { request: Request; server: Server }) {
   const url = new URL(request.url)
+  console.log("url :", url.pathname)
+
+  console.log("process.cwd() :", process.cwd())
 
   if (request.headers.get("upgrade") === "websocket") {
     try {
       const success = await server.upgrade(request)
+
       if (!success) {
         console.error("[WebSocket] Upgrade failed")
+
         return new Response("WebSocket upgrade failed: Connection could not be established", {
           status: 426,
           statusText: "Upgrade Required",
@@ -21,6 +28,7 @@ export async function handleRequests({ request, server }: { request: Request; se
       return undefined
     } catch (error) {
       console.error("[WebSocket] Error during upgrade:", error)
+
       return new Response("WebSocket upgrade failed: Internal server error", {
         status: 500,
       })
@@ -32,28 +40,39 @@ export async function handleRequests({ request, server }: { request: Request; se
 
   if (ALLOWED_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
     try {
-      // Sanitize and validate path
-      const cleanPath = url.pathname.replace(/\.\./g, "")
-      if (!cleanPath.match(/^[/\w.-]+$/)) {
-        return new Response("Invalid asset path", {
-          status: 400,
-          statusText: "Bad Request",
+      const publicDir = join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "dist")
+
+      console.log("publicDir :", publicDir)
+      const fullPath = join(publicDir, url.pathname)
+
+      // Debug log
+      logger({
+        msg: `Attempting to serve: ${fullPath}`,
+        styles: ["blue"],
+      })
+
+      // Check if file exists
+      if (!existsSync(fullPath)) {
+        logger({
+          msg: `File not found: ${fullPath}`,
+          styles: ["red"],
+        })
+        return new Response("Asset not found", {
+          status: 404,
+          statusText: "Not Found",
         })
       }
 
-      const publicDir = env.npm_package_config_dir_public || "./public"
-
-      if (!publicDir) {
-        throw new Error("Public directory not configured")
-      }
-
       const assetResponse = await handleStaticAssets({
-        path: cleanPath,
+        path: url.pathname,
         publicDir,
-        maxSize: MAX_FILE_SIZE,
       })
 
       if (!assetResponse) {
+        logger({
+          msg: `Failed to handle asset: ${fullPath}`,
+          styles: ["red"],
+        })
         return new Response("Asset not found", {
           status: 404,
           statusText: "Not Found",
