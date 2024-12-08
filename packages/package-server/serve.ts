@@ -1,4 +1,4 @@
-import type { BuildConfig, BunPlugin, Server } from "bun"
+import { type BuildConfig, type Server, build, serve } from "bun"
 import { clients, handleWSClose, handleWSMessage, handleWSOpen } from "./websocket"
 
 import type { ServerConfig } from "./types"
@@ -10,24 +10,23 @@ import { watcher } from "./watcher"
 
 const { env } = process
 
-const serverConfig = (): ServerConfig => ({
+const serverConfig: ServerConfig = {
   hostname: "::",
   development: env.NODE_ENV === "development",
   port: Number(env.npm_package_config_server_port),
-})
+}
 
-export async function startServer({
-  buildConfig,
-  watchPaths,
-}: {
+type StartServerOptions = {
   buildConfig: BuildConfig
   watchPaths: string[]
-}) {
-  store.buildResponse = await Bun.build(buildConfig)
+}
+
+export async function startServer({ buildConfig, watchPaths }: StartServerOptions) {
+  store.buildResponse = await build(buildConfig)
   store.currentContent = await contentMap()
 
-  const server = Bun.serve({
-    ...serverConfig(),
+  const server = serve({
+    ...serverConfig,
     async fetch(request: Request, server: Server) {
       return handleRequests({ request, server })
     },
