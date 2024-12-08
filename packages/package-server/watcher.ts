@@ -27,7 +27,7 @@ export async function watcher({ buildConfig, clients, scriptPaths }: WatcherProp
     throw new Error("PROJECT_ROOT is not defined")
   }
 
-  const watcher = watch(root, { recursive: true })
+  const watcher = watch(join(root, "packages/client/src"), { recursive: true })
 
   const location = cwd()
 

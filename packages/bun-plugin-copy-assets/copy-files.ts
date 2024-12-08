@@ -12,36 +12,77 @@ export async function copyFiles({
   destination: string
   silent: boolean
 }) {
-  const sourcePath = join(process.cwd(), source)
-  const destinationPath = join(destination.replace(/^\//, ""))
-  const relativePath = relative(process.cwd(), sourcePath)
+  try {
+    // Normalize paths
+    const relativePath = relative(process.cwd(), source)
 
-  if (!silent) {
-    logger(
-      { msg: "Copying from", styles: ["italic"] },
-      { msg: relativePath, styles: ["bold", "red"] },
-      { msg: "to", styles: ["dim"] },
-      { msg: destination, styles: ["bold", "green"] }
-    )
-  }
-
-  await fs.mkdir(destinationPath, { recursive: true })
-
-  const entries = await fs.readdir(sourcePath, { withFileTypes: true })
-
-  for (const entry of entries) {
-    const sourceEntryPath = join(sourcePath, entry.name)
-    const destinationEntryPath = join(destinationPath, entry.name)
-    const relativeSourcePath = relative(process.cwd(), sourceEntryPath)
-
-    if (entry.isDirectory()) {
-      await copyFiles({
-        source: relativeSourcePath,
-        destination: destinationEntryPath,
-        silent,
-      })
-    } else {
-      await fs.copyFile(sourceEntryPath, destinationEntryPath)
+    // Check if source exists
+    try {
+      await fs.access(source)
+    } catch (error) {
+      throw new Error(`Source path does not exist: ${source}`)
     }
+
+    // Create destination directory
+    try {
+      await fs.mkdir(destination, { recursive: true })
+    } catch (error) {
+      throw new Error(`Failed to create destination directory: ${(error as Error).message}`)
+    }
+
+    // Read directory contents
+    let entries
+    try {
+      entries = await fs.readdir(source, { withFileTypes: true })
+    } catch (error) {
+      throw new Error(`Failed to read source directory: ${(error as Error).message}`)
+    }
+
+    // Process each entry
+    for (const entry of entries) {
+      const sourceEntryPath = join(source, entry.name)
+      const destinationEntryPath = join(destination, entry.name)
+      const relativeSourcePath = relative(process.cwd(), sourceEntryPath)
+
+      try {
+        if (entry.isDirectory()) {
+          await copyFiles({
+            source: relativeSourcePath,
+            destination: destinationEntryPath,
+            silent,
+          })
+        } else {
+          await fs.copyFile(sourceEntryPath, destinationEntryPath)
+          if (!silent) {
+            logger(
+              { msg: "Copied file:", styles: ["italic"] },
+              { msg: entry.name, styles: ["bold", "green"] }
+            )
+          }
+        }
+      } catch (error) {
+        logger(
+          { msg: `Failed to copy ${entry.name}:`, styles: ["bold", "red"] },
+          { msg: (error as Error).message, styles: ["bold"] }
+        )
+        // Continue with next file instead of stopping completely
+        continue
+      }
+    }
+
+    if (!silent) {
+      logger(
+        { msg: "Completed copying from", styles: ["italic"] },
+        { msg: relativePath, styles: ["bold", "red"] },
+        { msg: "to", styles: ["dim"] },
+        { msg: destination, styles: ["bold", "green"] }
+      )
+    }
+  } catch (error) {
+    logger(
+      { msg: "Critical error during copy operation:", styles: ["bold", "red"] },
+      { msg: (error as Error).message, styles: ["bold"] }
+    )
+    throw error // Re-throw to allow handling by caller
   }
 }

@@ -2,8 +2,11 @@ import { file } from "bun"
 import { join } from "path"
 import { logger } from "../package-logger"
 
+const { env } = process
+
 export async function handleStaticAssets({ path, publicDir }: { path: string; publicDir: string }) {
-  const fullPath = join(process.cwd(), publicDir, path)
+  const fullPath = join(env.PROJECT_ROOT || "", publicDir, path)
+  // console.log("fullPath :", fullPath)
 
   try {
     const asset = file(fullPath)

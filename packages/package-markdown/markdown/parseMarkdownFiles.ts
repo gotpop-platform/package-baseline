@@ -3,6 +3,8 @@ import { join, parse } from "path"
 
 import { Glob } from "bun"
 
+const { env } = process
+
 const findMarkdownFiles = async (file: string): Promise<string[]> => {
   const glob = new Glob("**/*.md")
   const markdownFiles: string[] = []
@@ -48,10 +50,7 @@ const setNestedMap = (map: Map<string, any>, keys: string[], value: any) => {
 }
 
 export const contentMap = async () => {
-  const DIR_CONTENT = join(
-    process.cwd(),
-    process.env.npm_package_config_dir_content || ".src/content"
-  )
+  const DIR_CONTENT = join(env.PROJECT_ROOT, env.npm_package_config_dir_content)
 
   const glob = new Glob("**/*.md")
   const contentMap = new Map<string, any>()

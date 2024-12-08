@@ -8,11 +8,11 @@ type ExtendedLoader = Loader | "css"
 type BuildArtifactType = Omit<BuildArtifact, "loader"> & { loader: ExtendedLoader }
 
 const { env, cwd } = process
-const baseDir = path.join(cwd(), env.npm_package_config_dir_public || "dist")
+const baseDir = path.join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "")
 
 export const getRelativePaths = ({ outputs }: BuildOutput) =>
   outputs
-    .filter((output: BuildArtifactType) => !output.path.includes(".woff2"))
+    // .filter((output: BuildArtifactType) => !output.path.includes(".woff2"))
     .map((output: BuildArtifactType) => {
       const rootPath = output.path.replace(baseDir, "/").replace(/^\//, "")
       const entryPoint =
@@ -27,9 +27,7 @@ export const getRelativePaths = ({ outputs }: BuildOutput) =>
         ? "css"
         : "script"
 
-      logger({ msg: "Build complete", styles: ["green", "bold"] })
-      logger({ msg: "Output:", styles: ["dim"] }, { msg: rootPath, styles: ["blue"] })
-      console.log("rootPath :", rootPath)
+      logger({ msg: "Build Output:", styles: ["dim"] }, { msg: rootPath, styles: ["blue"] })
 
       return {
         entryPoint,

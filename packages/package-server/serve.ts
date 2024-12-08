@@ -32,7 +32,7 @@ export async function startServer({ buildConfig }: { buildConfig: BuildConfig })
     },
   })
 
-  console.log("store.scriptPaths :", store.scriptPaths)
+  // console.log("store.scriptPaths :", store.scriptPaths)
   await watcher({ buildConfig, clients, scriptPaths: store.scriptPaths })
 
   logger(

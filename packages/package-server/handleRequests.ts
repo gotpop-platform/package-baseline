@@ -20,6 +20,7 @@ export async function handleRequests({ request, server }: { request: Request; se
 
   // Static assets
   if (url.pathname.startsWith("/assets/")) {
+    // console.log("pathname :", url.pathname)
     const assetResponse = await handleStaticAssets({
       path: url.pathname,
       publicDir: env.npm_package_config_dir_public || "./public",

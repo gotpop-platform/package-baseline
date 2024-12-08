@@ -14,11 +14,11 @@ interface ModuleType {
   default: (props: PageProps & { query: Record<string, string> }) => Promise<string>
 }
 
-const { env, cwd } = process
+const { env } = process
 
 const router = new Bun.FileSystemRouter({
   style: (env.npm_package_config_server_router_style || "nextjs") as "nextjs",
-  dir: join(cwd(), env.npm_package_config_dir_pages || "./src/pages"),
+  dir: join(env.PROJECT_ROOT, env.npm_package_config_dir_pages),
 })
 
 export const handleGetPages = async (data: PageProps): Promise<Response> => {

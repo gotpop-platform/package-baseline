@@ -24,6 +24,9 @@ export const createCopyFilesPlugin = (options: CopyFilesPluginOptions): BunPlugi
 
     if (!silent) logger({ msg: "Copying assets...", styles: ["bold", "bgYellowBright"] })
 
+    let fileCheck
+    console.log("directories :", directories)
+
     try {
       for (const directory of directories) {
         const destination = join(
@@ -33,9 +36,15 @@ export const createCopyFilesPlugin = (options: CopyFilesPluginOptions): BunPlugi
 
         if (onDir) await onDir(directory, destination)
 
+        // console.log("destination :", destination)
+        const path = join(inputDir, directory)
+        // console.log("path :", path)
+        fileCheck = destination
+        console.log("destination 33 :", destination)
+
         await copyFiles({
-          source: "/" + inputDir + "/" + directory,
-          destination: "/" + destination,
+          source: path,
+          destination,
           silent,
         })
       }
@@ -46,7 +55,8 @@ export const createCopyFilesPlugin = (options: CopyFilesPluginOptions): BunPlugi
           styles: ["bold", "bgGreenBright"],
         })
     } catch (error) {
-      logger({ msg: String(error), styles: ["bold", "red"] })
+      logger({ msg: `Files not copied! ${fileCheck}`, styles: ["bold", "red"] })
+      logger({ msg: `Files not copied! ${String(error)}`, styles: ["bold", "red"] })
     }
   },
 })
