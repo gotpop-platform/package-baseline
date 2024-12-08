@@ -16,7 +16,13 @@ const serverConfig = (): ServerConfig => ({
   port: Number(env.npm_package_config_server_port),
 })
 
-export async function startServer({ buildConfig }: { buildConfig: BuildConfig }) {
+export async function startServer({
+  buildConfig,
+  watchPaths,
+}: {
+  buildConfig: BuildConfig
+  watchPaths: string[]
+}) {
   store.buildResponse = await Bun.build(buildConfig)
   store.currentContent = await contentMap()
 
@@ -32,8 +38,12 @@ export async function startServer({ buildConfig }: { buildConfig: BuildConfig })
     },
   })
 
-  // console.log("store.scriptPaths :", store.scriptPaths)
-  await watcher({ buildConfig, clients, scriptPaths: store.scriptPaths })
+  await watcher({
+    buildConfig,
+    clients,
+    scriptPaths: store.scriptPaths,
+    watchPaths,
+  })
 
   logger(
     { msg: "Server running at:", styles: ["green", "bold"] },

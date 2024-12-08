@@ -13,4 +13,5 @@ export interface WatcherProps {
   clients: Set<ServerWebSocket<unknown>>
   scriptPaths: Record<string, string>[]
   buildConfig: BuildConfig
+  watchPaths?: string[] // Make optional
 }
