@@ -23,7 +23,7 @@
     "jsxFragmentFactory": "Fragment",
 
     /* Paths */
-    "baseUrl": ".", // This must be specified if "paths" is specified
+    "baseUrl": ".",
     "paths": {
       "@/gotpop-platform/*": ["packages/*/"],
       "blocks": ["src/blocks"],
