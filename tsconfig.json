@@ -26,13 +26,14 @@
     "baseUrl": ".", // This must be specified if "paths" is specified
     "paths": {
       "@/gotpop-platform/*": ["packages/*/"],
+      "blocks": ["src/blocks"],
       "components": ["src/components"],
-      "layouts": ["src/components/layouts"],
-      "variables": ["src/variables"],
-      "pages": ["src/pages"],
       "generics": ["src/generics"],
+      "layouts": ["src/components/layouts"],
+      "pages": ["src/pages"],
       "types": ["src/types"],
-      "utils": ["src/utils"]
+      "utils": ["src/utils"],
+      "variables": ["src/variables"]
     },
     "typeRoots": ["./src/types", "node_modules/@types"]
   },
