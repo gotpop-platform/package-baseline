@@ -9,7 +9,7 @@ export const MenuItem = ({
   href,
   subMenuItems,
 }: {
-  children?: JSX.Element
+  children?: string
   position: string
   textButton: string
   href: string
@@ -17,7 +17,7 @@ export const MenuItem = ({
     title: string
     link: string
   }> | null
-}) => {
+}): JSX.Element => {
   const { css } = useCSS({ meta: import.meta })
 
   return (

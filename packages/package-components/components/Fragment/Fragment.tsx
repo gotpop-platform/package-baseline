@@ -1,8 +1,10 @@
+type FragmentType = string | string[] | JSX.Element | JSX.Element[]
+
 export const Fragment = ({
   children,
 }: {
-  children?: JSX.Element
-}): JSX.Element | null => {
+  children?: FragmentType
+}): FragmentType | null => {
   if (children !== undefined) {
     return children
   }

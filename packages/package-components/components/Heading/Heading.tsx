@@ -8,7 +8,7 @@ export const Heading = ({
   level = 1,
   index = 0,
 }: {
-  children?: JSX.Element
+  children?: string
   level?: 1 | 2 | 3 | 4 | 5 | 6
   index?: number
 }): JSX.Element | null => {

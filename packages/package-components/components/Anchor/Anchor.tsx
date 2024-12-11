@@ -3,7 +3,7 @@ import { useCSS } from "../../../package-utilities"
 
 type AnchorProps = {
   href: string
-  children?: string | JSX.Element | JSX.Element[]
+  children?: string | string | string[]
 }
 
 export const Anchor = ({ href, children }: AnchorProps) => {

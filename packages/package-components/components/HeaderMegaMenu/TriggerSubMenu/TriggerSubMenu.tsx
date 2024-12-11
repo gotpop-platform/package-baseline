@@ -1,7 +1,7 @@
 import { jsxFactory } from "../../../../package-jsx-factory"
 import { useCSS } from "../../../../package-utilities"
 
-export const Fragment = ({ children }: { children?: JSX.Element }) => children || null
+export const Fragment = ({ children }: { children?: string }) => children || null
 
 export const TriggerSubMenu = ({
   position,

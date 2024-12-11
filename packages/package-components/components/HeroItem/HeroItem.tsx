@@ -7,7 +7,7 @@ export function HeroItem({
   hasInner = false,
   ...rest
 }: {
-  children?: string | JSX.Element | (string | JSX.Element)[]
+  children?: string | string | (string | string)[]
   isMain?: boolean
   hasInner?: boolean
   [key: string]: any

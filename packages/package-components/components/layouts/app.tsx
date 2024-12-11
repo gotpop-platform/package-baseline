@@ -2,7 +2,7 @@ import { Head } from "../Head"
 import { jsxFactory } from "../../../package-jsx-factory"
 
 interface AppProps {
-  children?: string | JSX.Element | JSX.Element[]
+  children?: string | string | string[]
   title: string
   scriptPaths: Record<string, string>[]
 }

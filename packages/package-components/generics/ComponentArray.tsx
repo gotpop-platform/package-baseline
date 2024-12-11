@@ -11,9 +11,9 @@ type WrappedProps = {
   layout: Record<string, string | number>
 }
 
-const Fragment = ({ children }: { children?: JSX.Element }) => children || null
+const Fragment = ({ children }: { children?: string }) => children || null
 
-export function withItems(Component: (props: WrappedProps) => JSX.Element) {
+export function withItems(Component: (props: WrappedProps) => string) {
   return function WrappedComponent({ markdownItems, layout }: ComponentProps) {
     const items: JSX.Element[] = []
     let index = 0
