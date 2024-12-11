@@ -10,7 +10,7 @@ import {
 } from "."
 
 import type { Server } from "bun"
-import { contentMap } from "../package-markdown"
+import { contentMap } from "@/gotpop-platform/package-markdown"
 import { logger } from "@/gotpop-platform/package-logger"
 
 export async function startServer({ buildConfig, serverConfig }: StartServerOptions) {
