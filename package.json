@@ -9,7 +9,7 @@
     "clean": "rm -rf node_modules",
     "login": "bunx npm login --registry=https://npm.pkg.github.com",
     "test": "echo \"No tests specified\" && exit 0",
-    "pub": "bunx dotenv bunx publish --registry=https://npm.pkg.github.com"
+    "pub": "bunx dotenv npm publish"
   },
   "repository": {
     "type": "git",
