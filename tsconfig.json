@@ -16,7 +16,7 @@
     "jsxFragmentFactory": "Fragment",
     "baseUrl": ".",
     "paths": {
-      "@/gotpop-platform/*": ["packages/*/"]
+      "@/*": ["packages/*"]
     }
   },
   "include": ["src/**/*", "packages/**/*", "**/global.d.ts"],
