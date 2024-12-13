@@ -1,15 +1,15 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "A baseline starter kit",
   "main": "packages/index.ts",
   "scripts": {
     "build": "tsc",
     "bump": "bunx bumpp -a patch",
     "clean": "rm -rf node_modules",
+    "login": "bunx npm login --registry=https://npm.pkg.github.com",
     "test": "echo \"No tests specified\" && exit 0",
-    "testy": "echo $pwd",
-    "pub": "bunx dotenv npm publish"
+    "pub": "bunx dotenv bunx publish --registry=https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",

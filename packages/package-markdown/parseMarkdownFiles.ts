@@ -49,6 +49,8 @@ const setNestedMap = (map: Map<string, any>, keys: string[], value: any) => {
   }
 }
 
+const IGNORED_DIRS = ["content"]
+
 export const contentMap = async () => {
   const ROOT = env.PROJECT_ROOT || ""
   const DIR_CONTENT = join(ROOT, env.npm_package_config_dir_content || "")
@@ -58,7 +60,10 @@ export const contentMap = async () => {
 
   for await (const file of glob.scan(DIR_CONTENT)) {
     const relativePath = file.replace(DIR_CONTENT + "/", "")
-    const pathParts = relativePath.split("/")
+    const pathParts = relativePath
+      .split("/")
+      .filter((part) => !IGNORED_DIRS.includes(part.toLowerCase()))
+
     const fileName = pathParts.pop()
     const fileKey = fileName ? parse(fileName).name : ""
 
