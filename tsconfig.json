@@ -5,37 +5,19 @@
     "module": "ESNext",
     "moduleDetection": "force",
     "allowJs": true,
-
-    /* Bundler mode */
     "moduleResolution": "node",
-
     "noEmit": true,
-
-    /* Linting */
     "skipLibCheck": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-
-    /* JSX */
     "jsx": "react",
     "jsxFactory": "jsxFactory",
     "jsxFragmentFactory": "Fragment",
-
-    /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/gotpop-platform/*": ["packages/*/"],
-      "blocks": ["src/blocks"],
-      "components": ["src/components"],
-      "generics": ["src/generics"],
-      "layouts": ["src/components/layouts"],
-      "pages": ["src/pages"],
-      "types": ["src/types"],
-      "utils": ["src/utils"],
-      "variables": ["src/variables"]
-    },
-    "typeRoots": ["./src/types", "node_modules/@types"]
+      "@/gotpop-platform/*": ["packages/*/"]
+    }
   },
   "include": ["src/**/*", "packages/**/*", "**/global.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]

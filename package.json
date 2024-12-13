@@ -1,6 +1,6 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.26",
+  "version": "0.0.28",
   "description": "A baseline starter kit",
   "main": "packages/index.ts",
   "scripts": {
@@ -8,7 +8,8 @@
     "bump": "bunx bumpp -a patch",
     "clean": "rm -rf node_modules",
     "test": "echo \"No tests specified\" && exit 0",
-    "pub": "dotenv npm publish"
+    "testy": "echo $pwd",
+    "pub": "bunx dotenv npm publish"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "typescript": "^5.7.2"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.7",
+    "dotenv-cli": "^7.4.4"
   },
   "bun": {
     "version": ">=1.1.38"

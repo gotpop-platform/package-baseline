@@ -1,5 +1,10 @@
 [install]
-registry = "https://registry.npmjs.org" # redeclare default!
+registry = "https://registry.npmjs.org"
 
 [install.scopes]
-"@gotpop-platform" = { token = "$GITHUB_TOKEN", url = "https://npm.pkg.github.com/" }
+"@gotpop-platform" = { token = "$GITHUB_TOKEN", url = "https://npm.pkg.github.com" }
+
+[publish]
+registry = "https://npm.pkg.github.com"
+token = "$GITHUB_TOKEN"
+scope = "@gotpop-platform"
