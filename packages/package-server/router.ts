@@ -1,7 +1,7 @@
 import { INTERNAL_SERVER_ERROR_RESPONSE, NOT_FOUND_RESPONSE, importModule } from "."
 
 import { join } from "path"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 import { timeFunction } from "../package-utilities"
 
 interface PageProps {

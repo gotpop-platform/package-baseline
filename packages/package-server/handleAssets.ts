@@ -1,6 +1,6 @@
 import { file } from "bun"
 import { join } from "path"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 
 const MIME_TYPES = {
   ".html": "text/html",

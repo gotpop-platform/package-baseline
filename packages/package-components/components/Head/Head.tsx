@@ -1,3 +1,4 @@
+import { env } from "process"
 import { jsxFactory } from "../../../package-jsx-factory"
 
 interface ScriptPath {
@@ -5,6 +6,7 @@ interface ScriptPath {
   hashedPath: string
   type: "script" | "worklet"
 }
+
 
 export const Head = ({
   title,
@@ -43,10 +45,10 @@ export const Head = ({
       <title>{title}</title>
       <link rel="icon" href="/assets/img/favicon.png" />
       <link rel="stylesheet" href={baseStylePath} />
-      {process.env.NODE_ENV === "development" ? (
+      {env.NODE_ENV === "development" ? (
         <script>
           {`
-          const ws = new WebSocket('ws://localhost:${process.env.npm_package_config_server_port}');
+          const ws = new WebSocket('ws://localhost:${env.npm_package_config_server_port}');
           
           ws.onmessage = (event) => {
             console.log('🔄 Reloading page...');
@@ -64,7 +66,7 @@ export const Head = ({
         </script>
       ) : null}
       {renderScripts(scriptPaths)}
-      {process.env.NODE_ENV === "production" ? (
+      {env.NODE_ENV === "production" ? (
         <script type="speculationrules">
           {`{
             "prerender": [

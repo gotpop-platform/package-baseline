@@ -4,7 +4,7 @@ import { dirname, join, resolve, normalize } from "path"
 import { type WatcherProps, getRelativePaths, store } from "."
 import { contentMap } from "../package-markdown"
 import { env } from "process"
-import { logger } from "@/gotpop-platform/package-logger"
+import { logger } from "../package-logger"
 // import { watch } from "fs/promises"
 import { watch as fsWatch } from "fs"
 
