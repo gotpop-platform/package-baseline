@@ -7,16 +7,18 @@ interface AppProps {
   scriptPaths: Record<string, string>[]
 }
 
-export const AppTheme = ({ title, scriptPaths, children }: AppProps) => {
+const Fragment = ({ children }: { children?: string }): string => children || ""
+
+export const AppTheme = ({ title, scriptPaths, children }: AppProps): JSX.Element => {
   const doc = "<!DOCTYPE html>"
 
   return (
-    doc +
-    (
+    <>
+      {doc}
       <html lang="en">
         <Head title={title} scriptPaths={scriptPaths} />
         <body class="body">{children}</body>
       </html>
-    )
+    </>
   )
 }

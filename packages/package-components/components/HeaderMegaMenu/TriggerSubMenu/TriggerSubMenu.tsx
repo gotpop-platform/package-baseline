@@ -1,7 +1,7 @@
 import { jsxFactory } from "../../../../package-jsx-factory"
 import { useCSS } from "../../../../package-utilities"
 
-export const Fragment = ({ children }: { children?: string }) => children || null
+export const Fragment = ({ children }: { children?: string }): string => children || ""
 
 export const TriggerSubMenu = ({
   position,
@@ -20,7 +20,7 @@ export const TriggerSubMenu = ({
   const { css } = useCSS({ meta: import.meta })
 
   return (
-    <Fragment>
+    <>
       <a href={href} class="menu-link" id={`menu-toggle-${position}`}>
         <style>{css}</style>
         <span>{textButton}</span>
@@ -33,6 +33,6 @@ export const TriggerSubMenu = ({
           aria-label="Open submenu"
         />
       )}
-    </Fragment>
+    </>
   )
 }

@@ -13,7 +13,7 @@ type WrappedProps = {
 
 const Fragment = ({ children }: { children?: string }) => children || null
 
-export function withItems(Component: (props: WrappedProps) => string) {
+export function withItems(Component: (props: WrappedProps) => any) {
   return function WrappedComponent({ markdownItems, layout }: ComponentProps) {
     const items: JSX.Element[] = []
     let index = 0
@@ -41,6 +41,6 @@ export function withItems(Component: (props: WrappedProps) => string) {
 
     processMarkdownItems(markdownItems)
 
-    return <Fragment>{items}</Fragment>
+    return <>{items}</>
   }
 }

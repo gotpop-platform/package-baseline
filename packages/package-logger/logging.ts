@@ -1,4 +1,4 @@
-import { inspect, styleText } from "util";
+import { inspect, styleText } from "util"
 
 type ForegroundColors =
   | "black"
@@ -18,7 +18,7 @@ type ForegroundColors =
   | "white"
   | "whiteBright"
   | "yellow"
-  | "yellowBright";
+  | "yellowBright"
 // https://nodejs.org/docs/latest/api/util.html#background-colors
 type BackgroundColors =
   | "bgBlack"
@@ -38,7 +38,7 @@ type BackgroundColors =
   | "bgWhite"
   | "bgWhiteBright"
   | "bgYellow"
-  | "bgYellowBright";
+  | "bgYellowBright"
 // https://nodejs.org/docs/latest/api/util.html#modifiers
 type Modifiers =
   | "blink"
@@ -52,34 +52,30 @@ type Modifiers =
   | "overlined"
   | "reset"
   | "strikethrough"
-  | "underline";
+  | "underline"
 
-type StyleType =
-  | ForegroundColors
-  | BackgroundColors
-  | Modifiers
-  | Array<ForegroundColors | BackgroundColors | Modifiers>;
+type StyleType = ForegroundColors | BackgroundColors | Modifiers
 
 export const logObject = (obj: Record<string, string>) => {
-  const { styles } = inspect;
+  const { styles } = inspect
 
-  styles.string = "green";
-  styles.number = "blue";
-  styles.boolean = "red";
-  styles.date = "magenta";
-  styles.null = "bgCyan";
-  styles.undefined = "bgYellow";
+  styles.string = "green"
+  styles.number = "blue"
+  styles.boolean = "red"
+  styles.date = "magenta"
+  styles.null = "bgCyan"
+  styles.undefined = "bgYellow"
 
-  console.log(inspect(obj, { colors: true }));
-};
+  console.log(inspect(obj, { colors: true }))
+}
 
-type LoggerType = Array<{ msg: string; styles: StyleType[] }>;
+type LoggerType = Array<{ msg: string; styles: StyleType[] }>
 
 export const logger = (...items: LoggerType) =>
   console.log(
     items
       .map(({ msg, styles }) =>
-        styles.reduce((text, style) => styleText(style, text), msg)
+        styles.reduce((text, style) => styleText(style as StyleType, text), msg)
       )
       .join(" ")
-  );
+  )
