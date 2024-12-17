@@ -1,12 +1,12 @@
 import { env } from "process"
 import { jsxFactory } from "../../../package-jsx-factory"
+import { title as mkTitle } from "../../../package-utilities"
 
 interface ScriptPath {
   entryPoint: string
   hashedPath: string
   type: "script" | "worklet"
 }
-
 
 export const Head = ({
   title,
@@ -42,7 +42,7 @@ export const Head = ({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="keywords" content="HTML, CSS, JavaScript" />
       <meta name="author" content="GotPop"></meta>
-      <title>{title}</title>
+      <title>{mkTitle(title)}</title>
       <link rel="icon" href="/assets/img/favicon.png" />
       <link rel="stylesheet" href={baseStylePath} />
       {env.NODE_ENV === "development" ? (
