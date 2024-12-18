@@ -1,6 +1,6 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "A baseline starter kit",
   "main": "packages/index.ts",
   "scripts": {
@@ -35,7 +35,7 @@
     "dotenv-cli": "^7.4.4"
   },
   "bun": {
-    "version": ">=1.1.38"
+    "version": ">=1.1.39"
   },
   "prettier": {
     "printWidth": 100,
