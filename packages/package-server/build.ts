@@ -38,6 +38,8 @@ export const getRelativePaths = ({ outputs }: BuildOutput) => {
         ? "worklet"
         : output.loader === "css"
         ? "css"
+        : output.path.includes(".woff2") || output.path.includes(".woff")
+        ? "font"
         : "script"
 
       return {

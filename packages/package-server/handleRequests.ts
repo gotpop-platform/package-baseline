@@ -1,4 +1,4 @@
-import type { BuildConfig, Server } from "bun"
+import { serve, type BuildConfig, type Server } from "bun"
 
 import { ServerConfig } from "./types"
 import { env } from "process"
@@ -9,8 +9,20 @@ import { join } from "path"
 import { logger } from "../package-logger"
 import { store } from "./store"
 
-const ALLOWED_EXTENSIONS = [".js", ".css", ".woff2", ".png", ".jpg", ".svg", ".ico"]
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const MIME_TYPES = {
+  ".html": "text/html",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+} as const
 
 export async function handleRequests({
   request,
@@ -45,7 +57,7 @@ export async function handleRequests({
     }
   }
 
-  if (ALLOWED_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
+  if (serverConfig.allowedExtensions.some((ext) => url.pathname.endsWith(ext))) {
     try {
       const publicDir = join(env.PROJECT_ROOT || "", env.npm_package_config_dir_public || "dist")
       const fullPath = join(publicDir, url.pathname)
@@ -70,7 +82,7 @@ export async function handleRequests({
 
       const fileStats = Bun.file(fullPath).size
 
-      if (fileStats > MAX_FILE_SIZE) {
+      if (fileStats > serverConfig.maxFileSize) {
         logger({
           msg: `File too large: ${fullPath} (${fileStats} bytes)`,
           styles: ["red"],
@@ -84,6 +96,7 @@ export async function handleRequests({
       const assetResponse = await handleStaticAssets({
         path: url.pathname,
         publicDir,
+        mimeTypes: serverConfig.mimeTypes,
       })
 
       if (!assetResponse) {

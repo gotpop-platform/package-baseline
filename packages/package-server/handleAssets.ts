@@ -2,25 +2,11 @@ import { file } from "bun"
 import { join } from "path"
 import { logger } from "../package-logger"
 
-const MIME_TYPES = {
-  ".html": "text/html",
-  ".css": "text/css",
-  ".js": "text/javascript",
-  ".json": "application/json",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".gif": "image/gif",
-  ".svg": "image/svg+xml",
-  ".ico": "image/x-icon",
-  ".woff": "font/woff",
-  ".woff2": "font/woff2",
-} as const
-
 interface AssetOptions {
   path: string
   publicDir: string
   maxSize?: number
+  mimeTypes: Record<string, string>
 }
 
 const checkFileSize = (fileSize: number, maxSize: number) => {
@@ -37,7 +23,12 @@ const checkFileSize = (fileSize: number, maxSize: number) => {
   return null
 }
 
-export async function handleStaticAssets({ path, publicDir, maxSize = 5_242_880 }: AssetOptions) {
+export async function handleStaticAssets({
+  path,
+  publicDir,
+  maxSize = 5_242_880,
+  mimeTypes,
+}: AssetOptions) {
   try {
     const filePath = join(publicDir, path)
     const f = file(filePath)
@@ -50,7 +41,7 @@ export async function handleStaticAssets({ path, publicDir, maxSize = 5_242_880 
     }
 
     const ext = path.substring(path.lastIndexOf("."))
-    const contentType = MIME_TYPES[ext as keyof typeof MIME_TYPES] || "application/octet-stream"
+    const contentType = mimeTypes[ext as keyof typeof mimeTypes] || "application/octet-stream"
 
     return new Response(f, {
       headers: {

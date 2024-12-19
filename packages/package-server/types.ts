@@ -8,7 +8,11 @@ export interface ServerConfig {
   development: boolean
   port: number
   watchPaths?: string[]
+  watchPathsExcluded?: string[]
   silent: boolean
+  mimeTypes: Record<string, string>
+  allowedExtensions: string[]
+  maxFileSize: number
 }
 
 export interface WatcherProps {
@@ -16,6 +20,7 @@ export interface WatcherProps {
   scriptPaths: Record<string, string>[]
   buildConfig: BuildConfig
   watchPaths?: string[]
+  serverConfig: ServerConfig
 }
 
 export type StartServerOptions = {

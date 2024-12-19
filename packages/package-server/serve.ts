@@ -34,6 +34,7 @@ export async function startServer({ buildConfig, serverConfig }: StartServerOpti
     clients,
     scriptPaths: store.scriptPaths,
     watchPaths: serverConfig.watchPaths,
+    serverConfig,
   })
 
   logger(

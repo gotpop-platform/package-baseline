@@ -5,34 +5,43 @@ import { type WatcherProps, getRelativePaths, store } from "."
 import { contentMap } from "../package-markdown"
 import { env } from "process"
 import { logger } from "../package-logger"
-// import { watch } from "fs/promises"
 import { watch as fsWatch } from "fs"
-
-const excludedPaths = ["node_modules", ".git", "dist"]
 
 function resolveCompletePath(basePath: string, filename?: string): string {
   if (!filename) return resolve(basePath)
+
   return join(resolve(basePath), filename)
 }
 
-function isPathExcluded(path: string): boolean {
+function isPathExcluded(path: string, watchPathsExcluded: string[]): boolean {
   const absolutePath = resolve(path)
   const normalizedPath = normalize(absolutePath).toLowerCase()
-  return excludedPaths.some((excluded) => normalizedPath.includes(`/${excluded}/`))
+
+  return watchPathsExcluded.some((excluded) => normalizedPath.includes(`/${excluded}/`))
 }
 
-function watchWithExclusions(paths: string[], callback: (path: string) => void) {
-  paths.forEach((basePath) => {
+interface WatchParams {
+  handleChange: Function
+  resolvedPaths: string[]
+  serverConfig: { watchPathsExcluded?: string[] }
+}
+
+function watchWithExclusions({
+  handleChange,
+  resolvedPaths,
+  serverConfig: { watchPathsExcluded = [] },
+}: WatchParams) {
+  resolvedPaths.forEach((basePath) => {
     const absolutePath = resolve(basePath)
 
-    if (!isPathExcluded(absolutePath)) {
+    if (!isPathExcluded(absolutePath, watchPathsExcluded)) {
       fsWatch(absolutePath, { recursive: true }, (_, filename) => {
         if (!filename) return
 
         const completePath = resolveCompletePath(absolutePath, filename)
 
-        if (filename && !isPathExcluded(completePath)) {
-          callback(filename)
+        if (filename && !isPathExcluded(completePath, watchPathsExcluded)) {
+          handleChange(filename)
         }
       })
     }
@@ -76,58 +85,12 @@ async function rebuildFiles({ buildConfig }: { buildConfig: BuildConfig }): Prom
   }
 }
 
-// async function createWatcher(watchPath: string, handleChange: (filename: string) => void) {
-//   if (!watchPath) {
-//     throw new Error("Watch path is required")
-//   }
-
-//   try {
-//     const watcher = watch(watchPath, { recursive: true })
-
-//     for await (const event of watcher) {
-//       if (!event || !event.filename) {
-//         logger({ msg: "Received invalid file event", styles: ["yellow"] })
-//         continue
-//       }
-
-//       const completePath = resolveCompletePath(watchPath, event.filename)
-
-//       if (isPathExcluded(completePath)) {
-//         continue
-//       }
-
-//       const VALID_FILE_PATTERN = /\.(css|js|md|ts|jsx|tsx|html)$/
-
-//       if (event.filename.match(VALID_FILE_PATTERN)) {
-//         logger({ msg: `Content changed: ${event.filename}`, styles: ["yellow"] })
-//         try {
-//           await handleChange(event.filename)
-//         } catch (error) {
-//           logger({
-//             msg: `Error handling file change: ${
-//               error instanceof Error ? error.message : String(error)
-//             }`,
-//             styles: ["red"],
-//           })
-//         }
-//       }
-//     }
-//   } catch (error) {
-//     const errorMessage = error instanceof Error ? error.message : "Unknown watcher error occurred"
-
-//     logger({
-//       msg: `File watcher error for ${watchPath}: ${errorMessage}`,
-//       styles: ["red"],
-//     })
-//     throw error
-//   }
-// }
-
 export async function watcher({
   buildConfig,
   clients,
   scriptPaths,
   watchPaths = [],
+  serverConfig,
 }: WatcherProps) {
   if (!buildConfig || !clients || !scriptPaths) {
     throw new Error("Missing required watcher properties")
@@ -140,11 +103,12 @@ export async function watcher({
 
   if (resolvedPaths.length === 0) {
     logger({ msg: "No paths to watch", styles: ["yellow"] })
+
     return
   }
 
   const handleChange = async (filename?: string) => {
-    if (filename && isPathExcluded(filename)) {
+    if (filename && isPathExcluded(filename, serverConfig.watchPathsExcluded || [])) {
       return
     }
 
@@ -169,7 +133,5 @@ export async function watcher({
     }
   }
 
-  // Set up both watching methods
-  watchWithExclusions(resolvedPaths, handleChange)
-  // await Promise.all(resolvedPaths.map((path) => createWatcher(path, handleChange)))
+  watchWithExclusions({ resolvedPaths, handleChange, serverConfig })
 }
