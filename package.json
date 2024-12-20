@@ -1,6 +1,6 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "A baseline starter kit",
   "main": "packages/index.ts",
   "scripts": {
