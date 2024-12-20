@@ -1,3 +1,4 @@
+import { Fragment } from "../../package-components"
 import type { MarkdownFileProps } from "../../package-markdown"
 import { jsxFactory } from "../../package-jsx-factory"
 
@@ -10,8 +11,6 @@ type WrappedProps = {
   markdownFile: MarkdownFileProps
   layout: Record<string, string | number>
 }
-
-const Fragment = ({ children }: { children?: string }) => children || null
 
 export function withItems(Component: (props: WrappedProps) => any) {
   return function WrappedComponent({ markdownItems, layout }: ComponentProps) {

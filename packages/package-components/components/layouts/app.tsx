@@ -1,3 +1,4 @@
+import { Fragment } from "../../../package-components"
 import { Head } from "../Head"
 import { jsxFactory } from "../../../package-jsx-factory"
 
@@ -6,8 +7,6 @@ interface AppProps {
   title: string
   scriptPaths: Record<string, string>[]
 }
-
-const Fragment = ({ children }: { children?: string }): string => children || ""
 
 export const AppTheme = ({ title, scriptPaths, children }: AppProps): JSX.Element => {
   const doc = "<!DOCTYPE html>"

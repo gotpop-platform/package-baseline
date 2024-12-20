@@ -1,7 +1,6 @@
+import { Fragment } from "../../../../package-components"
 import { jsxFactory } from "../../../../package-jsx-factory"
 import { useCSS } from "../../../../package-utilities"
-
-export const Fragment = ({ children }: { children?: string }): string => children || ""
 
 export const TriggerSubMenu = ({
   position,
