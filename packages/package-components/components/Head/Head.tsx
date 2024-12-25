@@ -1,6 +1,6 @@
 import { env } from "process"
-import { jsxFactory } from "../../../package-jsx-factory"
-import { title as mkTitle } from "../../../package-utilities"
+import { jsxFactory } from "packages/package-jsx-factory"
+import { title as mkTitle } from "packages/package-utilities"
 
 interface ScriptPath {
   entryPoint: string
