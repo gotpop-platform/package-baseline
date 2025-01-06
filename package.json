@@ -1,8 +1,9 @@
 {
   "name": "@gotpop-platform/package-baseline",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "A baseline starter kit",
   "main": "packages/index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "bump": "bunx bumpp -a patch",
@@ -15,6 +16,9 @@
     "type": "git",
     "url": "git@github.com:gotpop-platform/package-baseline.git"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "author": "GotPop",
   "license": "MIT",
   "keywords": [
