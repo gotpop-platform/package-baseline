@@ -39,7 +39,7 @@
     "dotenv-cli": "^7.4.4"
   },
   "bun": {
-    "version": ">=1.1.42"
+    "version": ">=1.2.0"
   },
   "prettier": {
     "printWidth": 100,
